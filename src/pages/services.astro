@@ -1,0 +1,55 @@
+---
+import { sanity } from "../lib/sanity";
+import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// GROQ query to fetch service content
+const query = `*[_type == "service"]{
+  name,
+  description,
+  price,
+  "imageUrl": image.asset->url
+}`;
+const services = await sanity.fetch(query);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Services</title>
+  </head>
+  <body
+    class="bg-gradient-to-b from-[#0a0a2e] via-[#0e103f] to-[#0a0a2e] text-gray-200 font-sans"
+  >
+  <BaseLayout title="Echoes Services">
+    <section class="max-w-7xl mx-auto px-6 py-20">
+      <!-- Title -->
+      <h1 class="text-4xl font-extrabold mb-4 text-center">Our Services</h1>
+      <p class="text-gray-400 max-w-2xl mx-auto text-center mb-16">
+        We craft unique digital experiences that elevate your brand. From
+        strategy to execution, we empower visionaries who dare to stand apart.
+      </p>
+
+      <!-- Services Grid -->
+      <div class="flex flex-col items-center gap-12">
+        {
+          services.map((s, i) => (
+            <div class="max-w-xl w-full border border-gray-700 rounded-xl p-6 shadow-lg bg-[#111132]/40">
+              <h2 class="text-2xl font-semibold mb-4 text-center">{s.name}</h2>
+              <p class="text-gray-400 mb-6 text-center">{s.description}</p>
+
+              {/* Show price if available */}
+              {s.price !== undefined && (
+                <p class="text-lg font-bold text-orange-400 mb-6 text-center">
+                  ₹{s.price}
+                </p>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </BaseLayout>
+  </body>
+</html>

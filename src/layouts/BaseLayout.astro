@@ -1,0 +1,28 @@
+---
+const { title = "Echoes" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="/">Echoes</a>
+      </div>
+      <div class="nav-links">
+        <a href="/services">Services</a>
+        <a href="/testimonials">Testimonials</a>
+        <a href="/contact">Contact</a>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <slot />
+  </body>
+</html>

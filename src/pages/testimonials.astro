@@ -1,0 +1,101 @@
+---
+import { sanity } from "../lib/sanity";
+import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// GROQ query including rating and image url
+const query = `*[_type == "testimonial"]{
+  author,
+  message,
+  rating,
+  "image": image.asset->url
+}`;
+
+const testimonials = await sanity.fetch(query);
+---
+<BaseLayout title="Echoes Services">
+<section class="bg-gray-50 min-h-screen py-20 font-sans flex flex-col">
+  <div
+    class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start"
+  >
+    <!-- Left section -->
+    <!-- Left section -->
+    <div class="pt-24">
+      <h1 class="text-4xl font-extrabold text-blue-900 mb-6 leading-tight">
+        Our customers<br />love what we do
+      </h1>
+      <p class="text-gray-500 mb-8 max-w-md">
+        Over 500,000 companies of all sizes use Echoes Creative to understand
+        their business and their market better.
+      </p>
+    </div>
+
+    <!-- Right section (testimonials) -->
+    <div class="flex flex-col gap-8">
+      {
+        testimonials.map((t, i) => (
+          <div
+            class="bg-white rounded-xl shadow-md p-6 flex gap-6 items-center"
+            key={i}
+          >
+            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+              {t.image ? (
+                <img
+                  src={t.image}
+                  alt={t.author}
+                  class="w-16 h-16 rounded-full object-cover"
+                />
+              ) : (
+                <svg
+                  class="w-8 h-8 text-blue-900"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M7.17 20c-2.04 0-3.92-1.14-4.87-2.89-.42-.82-.65-1.77-.65-2.73 0-2.4 1.83-4.44 4.1-4.44 1.68 0 2.83 1 3.15 2.05l.12.48-2.89 1.36c-.09-.32-.18-.61-.18-.92 0-.8.6-1.36 1.31-1.36.76 0 1.17.55 1.17 1.38 0 1.66-1.1 3.96-4.26 3.96zm10 0c-2.04 0-3.92-1.14-4.87-2.89-.42-.82-.65-1.77-.65-2.73 0-2.4 1.83-4.44 4.1-4.44 1.68 0 2.83 1 3.15 2.05l.12.48-2.89 1.36c-.09-.32-.18-.61-.18-.92 0-.8.6-1.36 1.31-1.36.76 0 1.17.55 1.17 1.38 0 1.66-1.1 3.96-4.26 3.96z" />
+                </svg>
+              )}
+            </div>
+            <div class="flex-1">
+              <svg
+                class="w-5 h-5 text-blue-800 mb-2"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M7 17h-5v-7h5v7zm5 0h-5v-7h5v7zm-2.5-12.5c-1.93 0-3.5 1.57-3.5 3.5h-2c0-3.04 2.46-5.5 5.5-5.5v2zm2.5 0c0-1.93-1.57-3.5-3.5-3.5v-2c3.04 0 5.5 2.46 5.5 5.5h-2z" />
+              </svg>
+              <p class="text-gray-700 mb-1">{t.message}</p>
+              <div class="font-bold text-blue-900">{t.author}</div>
+              {t.rating && (
+                <p class="text-orange-600 font-bold italic text-lg mt-1">
+                  "{t.rating}"
+                </p>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="w-full mt-14 overflow-hidden">
+    <svg
+      viewBox="0 0 1200 80"
+      height="80"
+      width="100%"
+      preserveAspectRatio="none"
+    >
+      <polygon
+        fill="#DB2600"
+        points="0,80 180,0 360,80 540,0 720,80 900,0 1080,80 1200,0 1200,80"
+      ></polygon>
+      <polygon
+        fill="#0022A7"
+        points="0,60 180,0 360,60 540,0 720,60 900,0 1080,60 1200,0 1200,80"
+      ></polygon>
+      <polygon
+        fill="#232358"
+        points="0,40 180,0 360,40 540,0 720,40 900,0 1080,40 1200,0 1200,80"
+      ></polygon>
+    </svg>
+  </div>
+</section>
+</BaseLayout>
